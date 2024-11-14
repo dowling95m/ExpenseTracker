@@ -15,6 +15,15 @@ SELECT t.transactionID, t.dollarAmount, t.date, ut.userID
 FROM Transactions t
 INNER JOIN Users_transactions ut ON t.transactionID = ut.transactionID;
 
+SELECT t.transactionID, t.dollarAmount, t.date, ut.userID
+FROM Transactions t
+INNER JOIN Users_transaction ut ON t.transactionID = ut.transactionID
+WHERE ut.userID = :userIDInput:;
+
+-- Query to get all UserTransaction data
+SELECT userTransactionID, userID, transactionID, percentageShare
+FROM Users_transactions;
+
 -- Query to add a new user
 INSERT INTO Users (userName, monthlyBudget)
 VALUES (:userNameInput, :monthlyBudgetInput);
