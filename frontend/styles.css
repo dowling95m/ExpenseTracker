@@ -136,16 +136,33 @@ body {
     font-weight: 600;
 }
 
-.table tr:hover {
-    background-color: #f2f7fd;
-}
-
 .table tr:nth-child(even) {
     background-color: #f9fbfd;
+}
+
+.table tr:hover {
+    background-color: #f2f7fd;
 }
 
 /* Additional Layout for Centering and Spacing */
 .content-container {
     text-align: center;
     margin-top: 1.5rem;
+}
+
+
+/* Search Bar Styling */
+.search-bar {
+    width: 100%;
+    max-width: 400px;
+    padding: 0.5em;
+    margin-bottom: 1em;
+    border: 1px solid #dde1e4;
+    border-radius: 4px;
+    font-size: 1em;
+    color: #333;
+}
+
+.search-bar::placeholder {
+    color: #aaa;
 }
