@@ -15,6 +15,7 @@ SELECT t.transactionID, t.dollarAmount, t.date, ut.userID
 FROM Transactions t
 INNER JOIN Users_transactions ut ON t.transactionID = ut.transactionID;
 
+-- Query to get transactions that match a user input from the search bar
 SELECT t.transactionID, t.dollarAmount, t.date, ut.userID
 FROM Transactions t
 INNER JOIN Users_transaction ut ON t.transactionID = ut.transactionID
