@@ -34,8 +34,8 @@ CREATE TABLE Transactions (
     dollarAmount decimal(10,2) NOT NULL,
     description varchar(255),
     date datetime NOT NULL,
-    FOREIGN KEY (paymentMethodID) REFERENCES payment_methods(paymentMethodID) ON DELETE SET NULL ON UPDATE CASCADE,
-    FOREIGN KEY (expenseCategoryID) REFERENCES expense_categories(expenseCategoryID) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (paymentMethodID) REFERENCES Payment_methods(paymentMethodID) ON DELETE SET NULL ON UPDATE CASCADE,
+    FOREIGN KEY (expenseCategoryID) REFERENCES Expense_categories(expenseCategoryID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE Users_transactions (
@@ -43,8 +43,8 @@ CREATE TABLE Users_transactions (
     userID int NOT NULL,
     transactionID int NOT NULL,
     percentageShare decimal(10,2),
-    FOREIGN KEY (userID) REFERENCES users(userID) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (transactionID) REFERENCES transactions(transactionID) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (userID) REFERENCES Users(userID) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (transactionID) REFERENCES Transactions(transactionID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
