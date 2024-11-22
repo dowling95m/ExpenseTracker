@@ -1,5 +1,5 @@
 <!-- index.hbs -->
-<h1>The server is running!</h1>
+<h1>The Server is Running!</h1>
 <p>If you see this text, the server is <strong>definitely</strong> working!</p>
 
 {{!-- Create a table --}}
@@ -44,6 +44,16 @@
     <input type="text" name="input-monthlyBudget" id="input-monthlyBudget">
 
     <input type="submit">
+</form>
+
+<h2>Search Using an HTML Form</h2>
+<p>Search by user name using the field below. Partial user names are OK too!</p>
+<form id="search-user-html" method='GET' action='/'>
+    <label for="input-userName">Search by User Name: </label>
+    <input type="text" name="userName" id="input-userName-html-search">
+    
+    <input type="submit">
+    <a href='/'><button>Reset</button></a>
 </form>
 
 {{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
