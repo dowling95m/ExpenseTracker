@@ -100,32 +100,33 @@ app.post('/add-user-ajax', function(req, res)
 app.delete('/delete-user-ajax/', function(req,res,next){
     let data = req.body;
     let userID = parseInt(data.userID);
-    let deleteBsg_Cert_People = `DELETE FROM User_transactions WHERE userID = ?`;
+    let deleteBsg_Cert_People = `DELETE FROM Users_transactions WHERE userID = ?`;
     let deleteBsg_People= `DELETE FROM Users WHERE userID = ?`;
     
     
-            // Run the 1st query
-            db.pool.query(deleteBsg_Cert_People, [userID], function(error, rows, fields){
-                if (error) {
-    
-                // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
-                console.log(error);
-                res.sendStatus(400);
-                }
-    
-                else
-                {
-                    // Run the second query
-                    db.pool.query(deleteBsg_People, [userID], function(error, rows, fields) {
-    
-                        if (error) {
-                            console.log(error);
-                            res.sendStatus(400);
-                        } else {
-                            res.sendStatus(204);
-                        }
-                    })
-                }
+        // Run the 1st query
+        db.pool.query(deleteBsg_Cert_People, [userID], function(error, rows, fields){
+            if (error) {
+
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error);
+            res.sendStatus(400);
+            }
+
+            else
+            {
+                // Run the second query
+                db.pool.query(deleteBsg_People, [userID], function(error, rows, fields) {
+
+                    if (error) {
+                        console.log(error);
+                        res.sendStatus(400);
+                    } else {
+                        res.sendStatus(204);
+                    }
+                })
+            }
+
     })});
 
 
