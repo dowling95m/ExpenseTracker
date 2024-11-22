@@ -2,6 +2,9 @@
 <h1>The Server is Running!</h1>
 <p>If you see this text, the server is <strong>definitely</strong> working!</p>
 
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+
 {{!-- Create a table --}}
 <table id="users-table">
 
@@ -16,6 +19,7 @@
                 {{@key}}
             </th>
             {{/each}}
+            <th>delete</th>
         </tr>
     </thead>
 
@@ -28,14 +32,17 @@
             <td>{{this.userID}}</td>
             <td>{{this.userName}}</td>
             <td>{{this.monthlyBudget}}</td>
+            <td><button onclick="deleteUser({{this.userID}})">Delete</button></td>
         </tr>
         {{/each}}
     </tbody>
 </table>
+<script src="./js/delete_user.js"></script>
+
 
 {{!-- Form to add a record to the table  --}}
 <h2>Adding Data with AJAX</h2>
-<p>To add a new person, please enter their information below and click 'Submit'!</p>
+<p>To add a new user, please enter their information below and click 'Submit'!</p>
 <form id="add-user-form-ajax">
     <label for="input-userName">User Name: </label>
     <input type="text" name="input-userName" id="input-userName">

@@ -67,15 +67,28 @@ addRowToTable = (data) => {
     let userNameCell = document.createElement("TD");
     let monthlyBudgetCell = document.createElement("TD");
 
+    let deleteCell = document.createElement("TD");
+
+
     // Fill the cells with correct data
     idCell.innerText = newRow.userID;
     userNameCell.innerText = newRow.userName;
     monthlyBudgetCell.innerText = newRow.monthlyBudget;
 
+    deleteCell = document.createElement("button");
+    deleteCell.innerHTML = "Delete";
+    deleteCell.onclick = function(){
+        deleteUser(newRow.userID);
+    };
+
     // Add the cells to the row 
     row.appendChild(idCell);
     row.appendChild(userNameCell);
     row.appendChild(monthlyBudgetCell);
+    row.appendChild(deleteCell);
+
+    // Add a row attribute so the deleteRow function can find a newly added row
+    row.setAttribute('data-value', newRow.userID);
     
     // Add the row to the table
     currentTable.appendChild(row);
