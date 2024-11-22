@@ -64,3 +64,23 @@
 
 {{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
 <script src="./js/add_user.js"></script>
+
+<h2>Updating A User's Form</h2>
+<p>To update a specific user's, select their name from the drop-down menu on the left and their desired monthly budget.</p>
+<form id="update-user-form-ajax">
+
+    <label for="input-userName">User Name: </label>
+    <select name="input-userName" id="mySelect">
+        <option value="test">Select a User</option>
+        {{#each data}}
+        <option value="{{this.userID}}">{{this.userID}}</option>
+        {{/each}}
+    </select>
+
+    <label for="input-monthlyBudget">Monthly Budget: </label>
+    <input type="text" name="input-monthlyBudget" id="input-monthlyBudget-update" placeholder="Enter a budget">
+
+    <input type="submit">
+</form>
+
+<script src="./js/update_user.js"></script>
