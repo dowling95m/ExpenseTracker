@@ -1,0 +1,91 @@
+{{!-- Citation for the following file as well as all handlebars and JS files used in the Node JS guide
+Date: 11/21/2024
+Adapted from the guide code, plugged in project specifics and will eventually keep expanding to make it look better
+Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%200%20-%20Setting%20Up%20Node.js --}}
+
+
+<h1>Expense Tracker Database</h1>
+
+<h2>Users Table</h2>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+
+{{!-- Create a table --}}
+<table id="users-table">
+
+    {{!-- Header section --}}
+    <thead>
+
+        {{!-- For just the first row, we print each key of the row object as a header cell so we
+        know what each column means when the page renders --}}
+        <tr>
+            {{#each data.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+            <th>delete</th>
+        </tr>
+    </thead>
+
+    {{!-- Body section --}}
+    <tbody>
+
+        {{!-- For each row, print the id, name, monthly budget in order --}}
+        {{#each data}}
+        <tr>
+            <td>{{this.userID}}</td>
+            <td>{{this.userName}}</td>
+            <td>{{this.monthlyBudget}}</td>
+            <td><button onclick="deleteUser({{this.userID}})">Delete</button></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+<script src="./js/delete_user.js"></script>
+
+{{!-- Form to add a record to the table  --}}
+<h2>Add New User</h2>
+<p>To add a new user, please enter their information below and click 'Submit'!</p>
+<form id="add-user-form-ajax">
+    <label for="input-userName">Name: </label>
+    <input type="text" name="input-userName" id="input-userName">
+    
+    <label for="input-monthlyBudget">Monthly Budget: </label>
+    <input type="text" name="input-monthlyBudget" id="input-monthlyBudget">
+
+    <input type="submit">
+</form>
+
+<h2>Search For a User</h2>
+<p>Search by user name using the field below.</p>
+<form id="search-user-html" method='GET' action='/'>
+    <label for="input-userName">Search by User Name: </label>
+    <input type="text" name="userName" id="input-userName-html-search">
+    
+    <input type="submit">
+    <a href='/'><button>Reset</button></a>
+</form>
+
+{{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
+<script src="./js/add_user.js"></script>
+
+<h2>Update a User's Budget</h2>
+<p>To update a specific user's, select their name from the drop-down menu on the left and their desired monthly budget.</p>
+<form id="update-user-form-ajax">
+
+    <label for="input-userName">User Name: </label>
+    <select name="input-userName" id="mySelect">
+        <option value="test">Select a User</option>
+        {{#each data}}
+        <option value="{{this.userID}}">{{this.userName}}</option>
+        {{/each}}
+    </select>
+
+    <label for="input-monthlyBudget">Monthly Budget: </label>
+    <input type="text" name="input-monthlyBudget" id="input-monthlyBudget-update" placeholder="Enter a budget">
+
+    <input type="submit">
+</form>
+
+<script src="./js/update_user.js"></script>
