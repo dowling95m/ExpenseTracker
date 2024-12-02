@@ -10,16 +10,16 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/St
 
 {{!-- Create a table for displaying transactions --}}
 <table id="transactions-table">
-
     {{!-- Header section --}}
     <thead>
         <tr>
-            {{#each data.[0]}}
-            <th>
-                {{@key}}
-            </th>
-            {{/each}}
-            <th>delete</th>
+            <th>Transaction ID</th>
+            <th>Payment Method ID</th>
+            <th>Expense Category ID</th>
+            <th>Amount</th>
+            <th>Description</th>
+            <th>Date</th>
+            <th>Delete</th>
         </tr>
     </thead>
 
@@ -29,10 +29,11 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/St
         {{#each data}}
         <tr>
             <td>{{this.transactionID}}</td>
-            <td>{{this.transactionDate}}</td>
-            <td>{{this.amount}}</td>
-            <td>{{this.paymentMethod}}</td>
-            <td>{{this.category}}</td>
+            <td>{{this.paymentMethodID}}</td>
+            <td>{{this.expenseCategoryID}}</td>
+            <td>${{this.dollarAmount}}</td>
+            <td>{{this.description}}</td>
+            <td>{{this.date}}</td>
             <td><button onclick="deleteTransaction({{this.transactionID}})">Delete</button></td>
         </tr>
         {{/each}}
@@ -44,29 +45,42 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/St
 <h2>Add New Transaction</h2>
 <p>To add a new transaction, please enter the details below and click 'Submit'!</p>
 <form id="add-transaction-form-ajax">
-    <label for="input-transactionDate">Transaction Date: </label>
-    <input type="date" name="input-transactionDate" id="input-transactionDate">
+    <label for="input-date">Transaction Date: </label>
+    <input type="datetime-local" name="input-date" id="input-date">
 
-    <label for="input-amount">Amount: </label>
-    <input type="text" name="input-amount" id="input-amount">
+    <label for="input-dollaramount">Amount: </label>
+    <input type="number" step="0.01" name="input-dollaramount" id="input-dollaramount">
+
+    <label for="input-description">Description: </label>
+    <input type="text" name="input-description" id="input-description">
 
     <label for="input-paymentMethod">Payment Method: </label>
-    <input type="text" name="input-paymentMethod" id="input-paymentMethod">
+    <select name="input-paymentMethod" id="input-paymentMethod">
+        <option value="">Select Payment Method</option>
+        {{#each paymentMethods}}
+        <option value="{{this.paymentMethodID}}">{{this.methodName}}</option>
+        {{/each}}
+    </select>
 
-    <label for="input-category">Category: </label>
-    <input type="text" name="input-category" id="input-category">
+    <label for="input-expenseCategory">Expense Category: </label>
+    <select name="input-expenseCategory" id="input-expenseCategory">
+        <option value="">Select Expense Category</option>
+        {{#each expenseCategories}}
+        <option value="{{this.expenseCategoryID}}">{{this.categoryName}}</option>
+        {{/each}}
+    </select>
 
     <input type="submit">
 </form>
 
 <h2>Search For a Transaction</h2>
 <p>Search by transaction ID, date, or category using the field below.</p>
-<form id="search-transaction-html" method='GET' action='/transactions'>
+<form id="search-transaction-html" method="GET" action="/transactions">
     <label for="input-search">Search by ID, Date, or Category: </label>
     <input type="text" name="searchTerm" id="input-search">
     
     <input type="submit">
-    <a href='/transactions'><button>Reset</button></a>
+    <a href="/transactions"><button>Reset</button></a>
 </form>
 
 {{!-- Embed JavaScript for handling form submissions and AJAX requests --}}
@@ -75,7 +89,6 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/St
 <h2>Update a Transaction</h2>
 <p>To update a specific transaction, select it from the drop-down menu and modify its details.</p>
 <form id="update-transaction-form-ajax">
-
     <label for="input-transactionID">Transaction ID: </label>
     <select name="input-transactionID" id="transactionSelect">
         <option value="test">Select a Transaction</option>
@@ -85,16 +98,26 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/St
     </select>
 
     <label for="input-transactionDate">New Transaction Date: </label>
-    <input type="date" name="input-transactionDate" id="input-transactionDate-update">
+    <input type="datetime-local" name="input-transactionDate" id="input-transactionDate-update">
 
     <label for="input-amount">New Amount: </label>
-    <input type="text" name="input-amount" id="input-amount-update">
+    <input type="number" step="0.01" name="input-amount" id="input-amount-update">
 
     <label for="input-paymentMethod">New Payment Method: </label>
-    <input type="text" name="input-paymentMethod" id="input-paymentMethod-update">
+    <select name="input-paymentMethod" id="input-paymentMethod-update">
+        <option value="">Select Payment Method</option>
+        {{#each paymentMethods}}
+        <option value="{{this.paymentMethodID}}">{{this.methodName}}</option>
+        {{/each}}
+    </select>
 
     <label for="input-category">New Category: </label>
-    <input type="text" name="input-category" id="input-category-update">
+    <select name="input-category" id="input-category-update">
+        <option value="">Select Expense Category</option>
+        {{#each expenseCategories}}
+        <option value="{{this.expenseCategoryID}}">{{this.categoryName}}</option>
+        {{/each}}
+    </select>
 
     <input type="submit">
 </form>

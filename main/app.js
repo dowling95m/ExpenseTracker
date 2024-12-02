@@ -54,22 +54,14 @@ app.get('/view_users', function(req, res) {
 });
 
 
+
 // View Transactions
 app.get('/view_transactions', function(req, res) {
     let query1;
-    if (req.query.userID === undefined) {
-        query1 = `
-            SELECT t.transactionID, t.dollarAmount, t.date, ut.userID
-            FROM Transactions t
-            INNER JOIN Users_transactions ut ON t.transactionID = ut.transactionID;
-        `;
+    if (req.query.transactionID === undefined) {
+        query1 = "SELECT transactionID, paymentMethodID, expenseCategoryID, dollarAmount, description, date FROM Transactions;";
     } else {
-        query1 = `
-            SELECT t.transactionID, t.dollarAmount, t.date, ut.userID
-            FROM Transactions t
-            INNER JOIN Users_transactions ut ON t.transactionID = ut.transactionID
-            WHERE ut.userID = ${req.query.userID};
-        `;
+        query1 = `SELECT * FROM Transactions WHERE transactionID LIKE "%${req.query.transactionID}%"`;
     }
 
     db.pool.query(query1, function(error, rows, fields) {
@@ -82,9 +74,16 @@ app.get('/view_transactions', function(req, res) {
     });
 });
 
-// User Transactions
+
+// View User Transactions
 app.get('/user_transactions', function(req, res) {
-    let query1 = "SELECT userTransactionID, userID, transactionID, percentageShare FROM Users_transactions;";
+    let query1;
+    if (req.query.userTransactionID === undefined) {
+        query1 = "SELECT userTransactionID, userID, transactionID, percentageShare FROM Users_transactions;";
+    } else {
+        query1 = `SELECT * FROM Users_transactions WHERE userTransactionID LIKE "%${req.query.userTransactionID}%"`;
+    }
+
     db.pool.query(query1, function(error, rows, fields) {
         if (error) {
             console.error(error);
@@ -395,7 +394,7 @@ app.delete('/delete-user-transaction-ajax/', function(req, res, next) {
     let transactionID = parseInt(data.transactionID);
 
     // Delete from the UserTransaction table
-    let deleteTransaction = `DELETE FROM UserTransaction WHERE transactionID = ?`;
+    let deleteTransaction = `DELETE FROM Users_transactions WHERE userTransactionID = ?`;
 
     // Run the query to delete the user transaction
     db.pool.query(deleteTransaction, [transactionID], function(error, rows, fields) {

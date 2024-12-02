@@ -3,12 +3,12 @@ Date: 11/21/2024
 Adapted from the guide code, plugged in project specifics and will eventually keep expanding to make it look better
 Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%200%20-%20Setting%20Up%20Node.js --}}
 
-<h1>User Transactions Tracker</h1>
+<h1>Expense Tracker Database</h1>
 
 <h2>User Transactions Table</h2>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
-{{!-- Create a table to display the user transactions --}}
+{{!-- Create a table --}}
 <table id="user-transactions-table">
 
     {{!-- Header section --}}
@@ -25,16 +25,14 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/St
 
     {{!-- Body section --}}
     <tbody>
-        {{!-- Loop through each user transaction and display its data --}}
+        {{!-- For each row, print the userTransactionID, userID, transactionID, and percentageShare --}}
         {{#each data}}
         <tr>
-            <td>{{this.transactionID}}</td>
+            <td>{{this.userTransactionID}}</td>
             <td>{{this.userID}}</td>
-            <td>{{this.transactionDate}}</td>
-            <td>{{this.amount}}</td>
-            <td>{{this.paymentMethod}}</td>
-            <td>{{this.category}}</td>
-            <td><button onclick="deleteUserTransaction({{this.transactionID}})">Delete</button></td>
+            <td>{{this.transactionID}}</td>
+            <td>{{this.percentageShare}}</td>
+            <td><button onclick="deleteUserTransaction({{this.userTransactionID}})">Delete</button></td>
         </tr>
         {{/each}}
     </tbody>
@@ -43,65 +41,48 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/St
 
 {{!-- Form to add a new user transaction --}}
 <h2>Add New User Transaction</h2>
-<p>To add a new user transaction, please enter the details below and click 'Submit'!</p>
+<p>To add a new user transaction, please enter the information below and click 'Submit'!</p>
 <form id="add-user-transaction-form-ajax">
     <label for="input-userID">User ID: </label>
     <input type="text" name="input-userID" id="input-userID">
-
-    <label for="input-transactionDate">Transaction Date: </label>
-    <input type="date" name="input-transactionDate" id="input-transactionDate">
-
-    <label for="input-amount">Amount: </label>
-    <input type="text" name="input-amount" id="input-amount">
-
-    <label for="input-paymentMethod">Payment Method: </label>
-    <input type="text" name="input-paymentMethod" id="input-paymentMethod">
-
-    <label for="input-category">Category: </label>
-    <input type="text" name="input-category" id="input-category">
+    
+    <label for="input-transactionID">Transaction ID: </label>
+    <input type="text" name="input-transactionID" id="input-transactionID">
+    
+    <label for="input-percentageShare">Percentage Share: </label>
+    <input type="text" name="input-percentageShare" id="input-percentageShare">
 
     <input type="submit">
 </form>
 
+{{!-- Search for a user transaction --}}
 <h2>Search For a User Transaction</h2>
-<p>Search by transaction ID, user ID, or category using the field below.</p>
-<form id="search-user-transaction-html" method='GET' action='/user_transactions'>
-    <label for="input-search">Search by ID, User ID, or Category: </label>
-    <input type="text" name="searchTerm" id="input-search">
+<p>Search by user transaction ID using the field below.</p>
+<form id="search-user-transaction-html" method="GET" action="/user_transactions">
+    <label for="input-userTransactionID">Search by User Transaction ID: </label>
+    <input type="text" name="userTransactionID" id="input-userTransactionID-html-search">
     
     <input type="submit">
     <a href='/user_transactions'><button>Reset</button></a>
 </form>
 
-{{!-- Embed JavaScript for handling form submissions and AJAX requests --}}
+{{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
 <script src="./js/add_user_transaction.js"></script>
 
-<h2>Update a User Transaction</h2>
-<p>To update a specific user transaction, select it from the drop-down menu and modify the necessary fields.</p>
+<h2>Update a User's Transaction</h2>
+<p>To update a specific user's transaction, select their user transaction ID from the drop-down menu on the left and their desired percentage share.</p>
 <form id="update-user-transaction-form-ajax">
 
-    <label for="input-transactionID">Transaction ID: </label>
-    <select name="input-transactionID" id="transactionSelect">
-        <option value="test">Select a Transaction</option>
+    <label for="input-userTransactionID">User Transaction ID: </label>
+    <select name="input-userTransactionID" id="mySelectUserTransactionID">
+        <option value="test">Select a User Transaction</option>
         {{#each data}}
-        <option value="{{this.transactionID}}">{{this.transactionID}}</option>
+        <option value="{{this.userTransactionID}}">{{this.userTransactionID}}</option>
         {{/each}}
     </select>
 
-    <label for="input-userID">User ID: </label>
-    <input type="text" name="input-userID" id="input-userID-update">
-
-    <label for="input-transactionDate">New Transaction Date: </label>
-    <input type="date" name="input-transactionDate" id="input-transactionDate-update">
-
-    <label for="input-amount">New Amount: </label>
-    <input type="text" name="input-amount" id="input-amount-update">
-
-    <label for="input-paymentMethod">New Payment Method: </label>
-    <input type="text" name="input-paymentMethod" id="input-paymentMethod-update">
-
-    <label for="input-category">New Category: </label>
-    <input type="text" name="input-category" id="input-category-update">
+    <label for="input-percentageShare">Percentage Share: </label>
+    <input type="text" name="input-percentageShare" id="input-percentageShare-update" placeholder="Enter the percentage share">
 
     <input type="submit">
 </form>
