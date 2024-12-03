@@ -333,21 +333,21 @@ app.delete('/delete-user-ajax/', function(req,res,next){
 
     })});
 
+
 app.delete('/delete-expense-category-ajax', function(req, res, next) {
     let data = req.body;
     let expenseCategoryID = parseInt(data.expenseCategoryID);
 
-    // First update transactions to set expenseCategoryID to NULL
-    let updateTransactions = `UPDATE Transactions SET expenseCategoryID = NULL WHERE expenseCategoryID = ?`;
+    // Delete related transactions
+    let deleteTransactions = `DELETE FROM Transactions WHERE expenseCategoryID = ?`;
     let deleteExpenseCategory = `DELETE FROM Expense_categories WHERE expenseCategoryID = ?`;
 
-    // Run the first query to update transactions
-    db.pool.query(updateTransactions, [expenseCategoryID], function(error, rows, fields) {
+    db.pool.query(deleteTransactions, [expenseCategoryID], function(error, rows, fields) {
         if (error) {
             console.log(error);
             res.sendStatus(400);
         } else {
-            // Run the second query to delete the expense category
+            // Delete the expense category
             db.pool.query(deleteExpenseCategory, [expenseCategoryID], function(error, rows, fields) {
                 if (error) {
                     console.log(error);
@@ -359,6 +359,7 @@ app.delete('/delete-expense-category-ajax', function(req, res, next) {
         }
     });
 });
+
 
     
 app.delete('/delete-payment-method-ajax', function(req, res, next) {
@@ -559,8 +560,6 @@ app.put('/put-user-transaction-ajax', function(req, res, next) {
         }
     });
 });
-
-
 
     /*
     LISTENER
