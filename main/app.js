@@ -392,18 +392,23 @@ app.delete('/delete-payment-method-ajax', function(req, res, next) {
 
 app.delete('/delete-user-transaction-ajax/', function(req, res, next) {
     let data = req.body;
-    let transactionID = parseInt(data.transactionID);
+    let userTransactionID = parseInt(data.userTransactionID);
 
-    // Delete from the UserTransaction table
-    let deleteTransaction = `DELETE FROM Users_transactions WHERE userTransactionID = ?`;
+    if (isNaN(userTransactionID)) {
+        console.log("Invalid userTransactionID:", data.userTransactionID);
+        res.status(400).send("Invalid userTransactionID");
+        return;
+    }
 
-    // Run the query to delete the user transaction
-    db.pool.query(deleteTransaction, [transactionID], function(error, rows, fields) {
+    // Delete the specific user-transaction pair
+    let deleteUserTransaction = `DELETE FROM Users_transactions WHERE userTransactionID = ?`;
+
+    db.pool.query(deleteUserTransaction, [userTransactionID], function(error, rows, fields) {
         if (error) {
             console.log(error);
-            res.sendStatus(400);
+            res.sendStatus(400); // Bad Request
         } else {
-            res.sendStatus(204); // Successfully deleted
+            res.sendStatus(204); // No Content
         }
     });
 });
@@ -540,23 +545,32 @@ app.put('/put-transaction-ajax', function(req, res, next) {
     });
 });
 
-
 app.put('/put-user-transaction-ajax', function(req, res, next) {
     let data = req.body;
 
-    let userID = parseInt(data.userID);
-    let transactionID = parseInt(data.transactionID);
-    let newPercentageShare = parseFloat(data.newPercentageShare);
+    // Parse input data
+    let newPercentageShare = parseFloat(data.newPercentageShare); // Expecting percentageShare
+    let userTransactionID = parseInt(data.userTransactionID); // Expecting userTransactionID
 
-    let queryUpdateUserTransaction = `UPDATE Users_transactions SET percentageShare = ? WHERE userID = ? AND transactionID = ?`;
+    // Validate the inputs
+    if (isNaN(newPercentageShare) || isNaN(userTransactionID)) {
+        console.log('Invalid input data:', { newPercentageShare, userTransactionID });
+        return res.status(400).send('Invalid input data');
+    }
 
-    // Run the query to update the user transaction association
-    db.pool.query(queryUpdateUserTransaction, [newPercentageShare, userID, transactionID], function(error, rows, fields) {
+    let queryUpdateUserTransaction = `
+        UPDATE Users_transactions
+        SET percentageShare = ?
+        WHERE userTransactionID = ?
+    `;
+
+    // Run the query to update the user transaction
+    db.pool.query(queryUpdateUserTransaction, [newPercentageShare, userTransactionID], function(error, rows, fields) {
         if (error) {
             console.log(error);
-            res.sendStatus(400);
+            return res.status(400).send('Error updating transaction');
         } else {
-            res.send(rows);  // Send back the updated data
+            res.sendStatus(204);  // No content, successful update
         }
     });
 });

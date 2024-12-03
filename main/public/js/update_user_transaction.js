@@ -8,20 +8,28 @@ let updateUserTransactionForm = document.getElementById('update-user-transaction
 
 // Modify the objects we need
 updateUserTransactionForm.addEventListener("submit", function (e) {
-   
     // Prevent the form from submitting
     e.preventDefault();
 
     // Get form fields we need to get data from
-    let inputTransactionAmount = document.getElementById("input-transaction-amount-update");
+    let inputUserTransactionID = document.getElementById("mySelectUserTransactionID");
+    let inputPercentageShareAmount = document.getElementById("input-percentageShare-update");
 
     // Get the values from the form fields
-    let transactionAmountValue = inputTransactionAmount.value;
+    let userTransactionIDValue = inputUserTransactionID.value;
+    let percentageShareValue = inputPercentageShareAmount.value;
 
-    // Put our data we want to send in a javascript object
-    let data = {
-        transactionAmount: transactionAmountValue,
+    // Validate the data
+    if (isNaN(userTransactionIDValue) || isNaN(percentageShareValue)) {
+        console.log('Invalid input data');
+        return;
     }
+
+    // Put our data we want to send in a JavaScript object
+    let data = {
+        newPercentageShare: percentageShareValue,
+        userTransactionID: userTransactionIDValue
+    };
     
     // Setup our AJAX request
     var xhttp = new XMLHttpRequest();
@@ -30,30 +38,27 @@ updateUserTransactionForm.addEventListener("submit", function (e) {
 
     // Tell our AJAX request how to resolve
     xhttp.onreadystatechange = () => {
-        if (xhttp.readyState == 4 && xhttp.status == 200) {
-            // Add the new data to the table
-            updateRow(xhttp.response, transactionAmountValue);
+        if (xhttp.readyState == 4 && xhttp.status == 204) {
+            // No content means update successful, so reload or modify row
+            updateRow(xhttp.response, userTransactionIDValue);
+        } else if (xhttp.readyState == 4 && xhttp.status != 200) {
+            console.log("There was an error with the input.");
         }
-        else if (xhttp.readyState == 4 && xhttp.status != 200) {
-            console.log("There was an error with the input.")
-        }
-    }
+    };
 
     // Send the request and wait for the response
     xhttp.send(JSON.stringify(data));
+});
 
-})
-
-function updateRow(data, userTransactionID){
-    let parsedData = JSON.parse(data);
-    
+function updateRow(data, userTransactionID) {
     let table = document.getElementById("user-transactions-table");
 
+    // Loop through the table rows to find the matching userTransactionID
     for (let i = 0, row; row = table.rows[i]; i++) {
-       if (table.rows[i].getAttribute("data-value") == userTransactionID) {
+        if (table.rows[i].getAttribute("data-value") == userTransactionID) {
             let updateRowIndex = table.getElementsByTagName("tr")[i];
-            let td = updateRowIndex.getElementsByTagName("td")[2];
-            td.innerHTML = parsedData[0].transactionAmount; 
-       }
+            let td = updateRowIndex.getElementsByTagName("td")[3]; // Assuming percentageShare is in the 4th column (index 3)
+            td.innerHTML = data.newPercentageShare;
+        }
     }
 }
