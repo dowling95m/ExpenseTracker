@@ -94,6 +94,8 @@ app.get('/user_transactions', function(req, res) {
     });
 });
 
+
+
 // Manage Expense Categories
 app.get('/manage_expense_categories', function(req, res) {
     let query1 = "SELECT expenseCategoryID, categoryName FROM Expense_categories;";
