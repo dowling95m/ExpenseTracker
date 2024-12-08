@@ -15,12 +15,19 @@ updateTransactionForm.addEventListener("submit", function (e) {
     // Get form fields we need to get data from
     let inputTransactionDate = document.getElementById("input-transaction-date-update");
 
+    // let inputPaymemtMethod = document.getElementById("input-paymentMethod");
+    // let inputExpenseCategory = document.getElementById("input-expenseCategory");
+
     // Get the values from the form fields
     let transactionDateValue = inputTransactionDate.value;
+    // let paymentMethodValue = inputPaymemtMethod.value;
+    // let expenseCategoryValue = inputExpenseCategory.value
 
     // Put our data we want to send in a javascript object
     let data = {
         transactionDate: transactionDateValue,
+        // paymentMethodID: paymentMethodValue,
+        // expenseCategoryID: expenseCategoryValue
     }
     
     // Setup our AJAX request

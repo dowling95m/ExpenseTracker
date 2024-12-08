@@ -56,40 +56,127 @@ app.get('/view_users', function(req, res) {
 
 
 // View Transactions
-app.get('/view_transactions', function(req, res) {
-    let query1;
-    if (req.query.transactionID === undefined) {
-        query1 = "SELECT transactionID, paymentMethodID, expenseCategoryID, dollarAmount, description, date FROM Transactions;";
-    } else {
-        query1 = `SELECT * FROM Transactions WHERE transactionID LIKE "%${req.query.transactionID}%"`;
-    }
+// app.get('/view_transactions', function(req, res) {
+//     let query1;
+//     if (req.query.transactionID === undefined) {
+//         query1 = "SELECT transactionID, paymentMethodID, expenseCategoryID, dollarAmount, description, date FROM Transactions;";
+//     } else {
+//         query1 = `SELECT * FROM Transactions WHERE transactionID LIKE "%${req.query.transactionID}%"`;
+//     }
 
-    db.pool.query(query1, function(error, rows, fields) {
-        if (error) {
-            console.error(error);
-            res.status(500).send("An error occurred");
+//     db.pool.query(query1, function(error, rows, fields) {
+//         if (error) {
+//             console.error(error);
+//             res.status(500).send("An error occurred");
+//         } else {
+//             res.render('view_transactions', { data: rows });
+//         }
+//     });
+// });
+
+app.get('/view_transactions', async function(req, res) {
+    try {
+        // Query for transactions
+        let query1;
+        if (req.query.transactionID === undefined) {
+            query1 = "SELECT transactionID, paymentMethodID, expenseCategoryID, dollarAmount, description, date FROM Transactions;";
         } else {
-            res.render('view_transactions', { data: rows });
+            query1 = `SELECT * FROM Transactions WHERE transactionID LIKE "%${req.query.transactionID}%"`;
         }
-    });
+
+        // Run the query for transactions
+        const transactions = await new Promise((resolve, reject) => {
+            db.pool.query(query1, (error, rows) => {
+                if (error) return reject(error);
+                resolve(rows);
+            });
+        });
+
+        // Query for payment methods
+        const paymentMethods = await new Promise((resolve, reject) => {
+            db.pool.query("SELECT paymentMethodID, paymentName FROM Payment_methods;", (error, rows) => {
+                if (error) return reject(error);
+                resolve(rows);
+            });
+        });
+
+        // Query for expense categories
+        const expenseCategories = await new Promise((resolve, reject) => {
+            db.pool.query("SELECT expenseCategoryID, categoryName FROM Expense_categories;", (error, rows) => {
+                if (error) return reject(error);
+                resolve(rows);
+            });
+        });
+
+        // Render the page with all required data
+        res.render('view_transactions', {
+            data: transactions,
+            paymentMethods: paymentMethods,
+            expenseCategories: expenseCategories
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("An error occurred");
+    }
 });
 
 
 // View User Transactions
+// app.get('/user_transactions', function(req, res) {
+//     let query1;
+//     if (req.query.userTransactionID === undefined) {
+//         query1 = "SELECT userTransactionID, userID, transactionID, percentageShare FROM Users_transactions;";
+//     } else {
+//         query1 = `SELECT * FROM Users_transactions WHERE userTransactionID LIKE "%${req.query.userTransactionID}%"`;
+//     }
+
+//     db.pool.query(query1, function(error, rows, fields) {
+//         if (error) {
+//             console.error(error);
+//             res.status(500).send("An error occurred");
+//         } else {
+//             res.render('user_transactions', { data: rows });
+//         }
+//     });
+// });
 app.get('/user_transactions', function(req, res) {
     let query1;
+    // Check if userTransactionID is provided, otherwise select all user transactions
     if (req.query.userTransactionID === undefined) {
         query1 = "SELECT userTransactionID, userID, transactionID, percentageShare FROM Users_transactions;";
     } else {
         query1 = `SELECT * FROM Users_transactions WHERE userTransactionID LIKE "%${req.query.userTransactionID}%"`;
     }
 
-    db.pool.query(query1, function(error, rows, fields) {
+    // Query for all users
+    db.pool.query("SELECT userID, userName FROM Users;", function(error, users, fields) {
         if (error) {
             console.error(error);
-            res.status(500).send("An error occurred");
+            res.status(500).send("An error occurred fetching users");
         } else {
-            res.render('user_transactions', { data: rows });
+            // Query for all transactions
+            db.pool.query("SELECT transactionID FROM Transactions;", function(error, transactions, fields) {
+                if (error) {
+                    console.error(error);
+                    res.status(500).send("An error occurred fetching transactions");
+                } else {
+                    // Query for user transactions
+                    db.pool.query(query1, function(error, rows, fields) {
+                        if (error) {
+                            console.error(error);
+                            res.status(500).send("An error occurred fetching user transactions");
+                        } else {
+                            // Render the template with all the necessary data
+                            res.render('user_transactions', {
+                                data: rows,          // User transaction data
+                                users: users,        // Users data for dropdown
+                                transactions: transactions  // Transactions data for dropdown
+                            });
+                        }
+                    });
+                }
+            });
         }
     });
 });
@@ -528,8 +615,8 @@ app.put('/put-transaction-ajax', function(req, res, next) {
     let data = req.body;
 
     let transactionID = parseInt(data.transactionID);
-    let newPaymentMethodID = parseInt(data.newPaymentMethodID);
-    let newExpenseCategoryID = parseInt(data.newExpenseCategoryID);
+    let newPaymentMethodID = parseInt(data.paymentMethodID);
+    let newExpenseCategoryID = parseInt(data.expenseCategoryID);
     let newDollarAmount = parseFloat(data.newDollarAmount);
     let newDescription = data.newDescription;
     let newDate = data.newDate;
