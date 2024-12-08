@@ -111,12 +111,17 @@ body {
     color: #fff;
 }
 
-.data-table td {
+/* .data-table td {
+    background-color: #fff;
+} */
+
+.data-table{
     background-color: #fff;
 }
 
+
 .data-table tr:nth-child(even) {
-    background-color: #f9f9f9;
+    background-color: #eaeef3;
 }
 
 .delete-button {
@@ -133,7 +138,7 @@ body {
 }
 
 .data-table tr:hover {
-    background-color: rgba(255, 255, 255, 0.3); /* Or another color */
+    background-color: #9bbedcce; /* Or another color */
 }
 
 /* Form Section */
@@ -236,10 +241,7 @@ body {
         gap: 1em;
     }
 
-    .data-table th,
-    .data-table td {
-        padding: 0.8em;
-    }
+
 
     .form-input,
     .form-select {
