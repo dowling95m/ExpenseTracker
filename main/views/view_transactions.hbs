@@ -3,123 +3,124 @@ Date: 11/21/2024
 Adapted from the guide code, plugged in project specifics and will eventually keep expanding to make it look better
 Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%200%20-%20Setting%20Up%20Node.js --}}
 
-<h1>Transactions Tracker</h1>
+<div class="page-container">
+    <h1 class="page-title">Transactions</h1>
 
-<h2>Transactions Table</h2>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <section class="form-section">
+        <h2 class="section-title">Transactions Table</h2>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <table id="transactions-table" class="data-table">
+            <thead>
+                <tr>
+                    <th>Transaction ID</th>
+                    <th>Payment Method ID</th>
+                    <th>Expense Category ID</th>
+                    <th>Amount</th>
+                    <th>Description</th>
+                    <th>Date</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each data}}
+                <tr>
+                    <td>{{this.transactionID}}</td>
+                    <td>{{this.paymentMethodID}}</td>
+                    <td>{{this.expenseCategoryID}}</td>
+                    <td>${{this.dollarAmount}}</td>
+                    <td>{{this.description}}</td>
+                    <td>{{this.date}}</td>
+                    <td>
+                        <button class="delete-button" onclick="deleteTransaction({{this.transactionID}})">Delete</button>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        <script src="./js/delete_transaction.js"></script>
+    </section>
 
-{{!-- Create a table for displaying transactions --}}
-<table id="transactions-table">
-    {{!-- Header section --}}
-    <thead>
-        <tr>
-            <th>Transaction ID</th>
-            <th>Payment Method ID</th>
-            <th>Expense Category ID</th>
-            <th>Amount</th>
-            <th>Description</th>
-            <th>Date</th>
-            <th>Delete</th>
-        </tr>
-    </thead>
+    <section class="form-section">
+        <h2 class="section-title">Add New Transaction</h2>
+        <p>To add a new transaction, please enter the details below and click 'Submit'!</p>
+        <form id="add-transaction-form-ajax" class="data-form">
+            <label for="input-date">Transaction Date: </label>
+            <input type="datetime-local" name="input-date" id="input-date" class="form-input">
 
-    {{!-- Body section --}}
-    <tbody>
-        {{!-- Loop through each transaction record and display its data --}}
-        {{#each data}}
-        <tr>
-            <td>{{this.transactionID}}</td>
-            <td>{{this.paymentMethodID}}</td>
-            <td>{{this.expenseCategoryID}}</td>
-            <td>${{this.dollarAmount}}</td>
-            <td>{{this.description}}</td>
-            <td>{{this.date}}</td>
-            <td><button onclick="deleteTransaction({{this.transactionID}})">Delete</button></td>
-        </tr>
-        {{/each}}
-    </tbody>
-</table>
-<script src="./js/delete_transaction.js"></script>
+            <label for="input-dollaramount">Amount: </label>
+            <input type="number" step="0.01" name="input-dollaramount" id="input-dollaramount" class="form-input">
 
-{{!-- Form to add a new transaction --}}
-<h2>Add New Transaction</h2>
-<p>To add a new transaction, please enter the details below and click 'Submit'!</p>
-<form id="add-transaction-form-ajax">
-    <label for="input-date">Transaction Date: </label>
-    <input type="datetime-local" name="input-date" id="input-date">
+            <label for="input-description">Description: </label>
+            <input type="text" name="input-description" id="input-description" class="form-input">
 
-    <label for="input-dollaramount">Amount: </label>
-    <input type="number" step="0.01" name="input-dollaramount" id="input-dollaramount">
+            <label for="input-paymentMethod">Payment Method: </label>
+            <select name="input-paymentMethod" id="input-paymentMethod" class="form-select">
+                <option value="">Select Payment Method</option>
+                {{#each paymentMethods}}
+                <option value="{{this.paymentMethodID}}">{{this.paymentName}}</option>
+                {{/each}}
+            </select>
 
-    <label for="input-description">Description: </label>
-    <input type="text" name="input-description" id="input-description">
+            <label for="input-expenseCategory">Expense Category: </label>
+            <select name="input-expenseCategory" id="input-expenseCategory" class="form-select">
+                <option value="">Select Expense Category</option>
+                {{#each expenseCategories}}
+                <option value="{{this.expenseCategoryID}}">{{this.categoryName}}</option>
+                {{/each}}
+            </select>
 
-    <label for="input-paymentMethod">Payment Method: </label>
-    <select name="input-paymentMethod" id="input-paymentMethod">
-        <option value="">Select Payment Method</option>
-        {{#each paymentMethods}}
-        <option value="{{this.paymentMethodID}}">{{this.paymentName}}</option>
-        {{/each}}
-    </select>
+            <input type="submit" class="submit-button">
+        </form>
+    </section>
 
-    <label for="input-expenseCategory">Expense Category: </label>
-    <select name="input-expenseCategory" id="input-expenseCategory">
-        <option value="">Select Expense Category</option>
-        {{#each expenseCategories}}
-        <option value="{{this.expenseCategoryID}}">{{this.categoryName}}</option>
-        {{/each}}
-    </select>
+    <section class="form-section">
+        <h2 class="section-title">Search For a Transaction</h2>
+        <p>Search by transaction ID, date, or category using the field below.</p>
+        <form id="search-transaction-html" method="GET" action="/transactions" class="data-form">
+            <label for="input-search">Search by ID, Date, or Category: </label>
+            <input type="text" name="searchTerm" id="input-search" class="form-input">
 
-    <input type="submit">
-</form>
+            <input type="submit" class="submit-button">
+            <a href="/transactions"><button type="button" class="reset-button">Reset</button></a>
+        </form>
+    </section>
 
-<h2>Search For a Transaction</h2>
-<p>Search by transaction ID, date, or category using the field below.</p>
-<form id="search-transaction-html" method="GET" action="/transactions">
-    <label for="input-search">Search by ID, Date, or Category: </label>
-    <input type="text" name="searchTerm" id="input-search">
-    
-    <input type="submit">
-    <a href="/transactions"><button>Reset</button></a>
-</form>
+    <section class="form-section">
+        <h2 class="section-title">Update a Transaction</h2>
+        <p>To update a specific transaction, select it from the drop-down menu and modify its details.</p>
+        <form id="update-transaction-form-ajax" class="data-form">
+            <label for="input-transactionID">Transaction ID: </label>
+            <select name="input-transactionID" id="transactionSelect" class="form-select">
+                <option value="test">Select a Transaction</option>
+                {{#each data}}
+                <option value="{{this.transactionID}}">{{this.transactionID}}</option>
+                {{/each}}
+            </select>
 
-{{!-- Embed JavaScript for handling form submissions and AJAX requests --}}
-<script src="./js/add_transaction.js"></script>
+            <label for="input-transactionDate">New Transaction Date: </label>
+            <input type="datetime-local" name="input-transactionDate" id="input-transactionDate-update" class="form-input">
 
-<h2>Update a Transaction</h2>
-<p>To update a specific transaction, select it from the drop-down menu and modify its details.</p>
-<form id="update-transaction-form-ajax">
-    <label for="input-transactionID">Transaction ID: </label>
-    <select name="input-transactionID" id="transactionSelect">
-        <option value="test">Select a Transaction</option>
-        {{#each data}}
-        <option value="{{this.transactionID}}">{{this.transactionID}}</option>
-        {{/each}}
-    </select>
+            <label for="input-amount">New Amount: </label>
+            <input type="number" step="0.01" name="input-amount" id="input-amount-update" class="form-input">
 
-    <label for="input-transactionDate">New Transaction Date: </label>
-    <input type="datetime-local" name="input-transactionDate" id="input-transactionDate-update">
+            <label for="input-paymentMethod">New Payment Method: </label>
+            <select name="input-paymentMethod" id="input-paymentMethod-update" class="form-select">
+                <option value="">Select Payment Method</option>
+                {{#each paymentMethods}}
+                <option value="{{this.paymentMethodID}}">{{this.methodName}}</option>
+                {{/each}}
+            </select>
 
-    <label for="input-amount">New Amount: </label>
-    <input type="number" step="0.01" name="input-amount" id="input-amount-update">
+            <label for="input-category">New Category: </label>
+            <select name="input-category" id="input-category-update" class="form-select">
+                <option value="">Select Expense Category</option>
+                {{#each expenseCategories}}
+                <option value="{{this.expenseCategoryID}}">{{this.categoryName}}</option>
+                {{/each}}
+            </select>
 
-    <label for="input-paymentMethod">New Payment Method: </label>
-    <select name="input-paymentMethod" id="input-paymentMethod-update">
-        <option value="">Select Payment Method</option>
-        {{#each paymentMethods}}
-        <option value="{{this.paymentMethodID}}">{{this.methodName}}</option>
-        {{/each}}
-    </select>
-
-    <label for="input-category">New Category: </label>
-    <select name="input-category" id="input-category-update">
-        <option value="">Select Expense Category</option>
-        {{#each expenseCategories}}
-        <option value="{{this.expenseCategoryID}}">{{this.categoryName}}</option>
-        {{/each}}
-    </select>
-
-    <input type="submit">
-</form>
-
-<script src="./js/update_transaction.js"></script>
+            <input type="submit" class="submit-button">
+        </form>
+        <script src="./js/update_transaction.js"></script>
+    </section>
+</div>

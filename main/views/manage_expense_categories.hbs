@@ -3,79 +3,77 @@ Date: 11/21/2024
 Adapted from the guide code, plugged in project specifics and will eventually keep expanding to make it look better
 Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%200%20-%20Setting%20Up%20Node.js --}}
 
-<h1>Expense Categories Tracker</h1>
+<div class="page-container">
+    <h1 class="page-title">Expense Categories</h1>
 
-<h2>Expense Categories Table</h2>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <section class="form-section">
+        <h2 class="section-title">Expense Categories Table</h2>
 
-{{!-- Create a table for displaying expense categories --}}
-<table id="expense-categories-table">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
-    {{!-- Header section --}}
-    <thead>
-        <tr>
-            {{#each data.[0]}}
-            <th>
-                {{@key}}
-            </th>
-            {{/each}}
-            <th>delete</th>
-        </tr>
-    </thead>
+        {{!-- Create a table for displaying expense categories --}}
+        <table id="expense-categories-table"  class="data-table">
+            <thead>
+                <tr>
+                    {{#each data.[0]}}
+                    <th>{{@key}}</th>
+                    {{/each}}
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{!-- Loop through each expense category record and display its data --}}
+                {{#each data}}
+                <tr>
+                    <td>{{this.expenseCategoryID}}</td>
+                    <td>{{this.categoryName}}</td>
+                    <td><button class="delete-button" onclick="deleteExpenseCategory({{this.expenseCategoryID}})">Delete</button></td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        <script src="./js/delete_expense_category.js"></script>
+    </section>
 
-    {{!-- Body section --}}
-    <tbody>
-        {{!-- Loop through each expense category record and display its data --}}
-        {{#each data}}
-        <tr>
-            <td>{{this.expenseCategoryID}}</td>
-            <td>{{this.categoryName}}</td>
-            <td><button onclick="deleteExpenseCategory({{this.expenseCategoryID}})">Delete</button></td>
-        </tr>
-        {{/each}}
-    </tbody>
-</table>
-<script src="./js/delete_expense_category.js"></script>
+    <section class="form-section">
+        <h2 class="section-title">Add New Expense Category</h2>
+        <p>To add a new expense category, please enter its name below and click 'Submit'!</p>
+        <form id="add-expense-category-form-ajax" class="data-form">
+            <label for="input-categoryName">Expense Category Name: </label>
+            <input type="text" name="input-categoryName" id="input-categoryName" class="form-input">
+            <input type="submit" value="Submit" class="submit-button">
+        </form>
+    </section>
 
-{{!-- Form to add a new expense category --}}
-<h2>Add New Expense Category</h2>
-<p>To add a new expense category, please enter its name below and click 'Submit'!</p>
-<form id="add-expense-category-form-ajax">
-    <label for="input-categoryName">Expense Category Name: </label>
-    <input type="text" name="input-categoryName" id="input-categoryName">
+    <section class="form-section">
+        <h2 class="section-title">Search For an Expense Category</h2>
+        <p>Search by expense category name using the field below.</p>
+        <form id="search-expense-category-html" method="GET" action="/expense-categories" class="data-form">
+            <label for="input-categoryName-html-search">Search by Category Name: </label>
+            <input type="text" name="categoryName" id="input-categoryName-html-search" class="form-input">
+            <input type="submit" value="Search" class="submit-button">
+            <a href="/expense-categories"><button class="reset-button" type="button">Reset</button></a>
+        </form>
+        <script src="./js/add_expense_category.js"></script>
+    </section>
 
-    <input type="submit">
-</form>
+    <section class="form-section">
+        <h2 class="section-title">Update an Expense Category</h2>
+        <p>To update a specific expense category, select it from the drop-down menu and provide its new name.</p>
+        <form id="update-expense-category-form-ajax"  class="data-form">
+            <label for="categorySelect">Expense Category Name: </label>
+            <select name="input-categoryName" id="categorySelect"  class="form-select">
+                <option value="test">Select an Expense Category</option>
+                {{#each data}}
+                <option value="{{this.expenseCategoryID}}">{{this.categoryName}}</option>
+                {{/each}}
+            </select>
+            
+            <label for="input-categoryName-update">New Expense Category Name: </label>
+            <input type="text" name="input-categoryName" id="input-categoryName-update" placeholder="Enter a new category name" class="form-input">
+            <input type="submit" value="Update" class="submit-button">
+        </form>
+        <script src="./js/update_expense_category.js"></script>
+    </section>
 
-<h2>Search For an Expense Category</h2>
-<p>Search by expense category name using the field below.</p>
-<form id="search-expense-category-html" method='GET' action='/expense-categories'>
-    <label for="input-categoryName">Search by Category Name: </label>
-    <input type="text" name="categoryName" id="input-categoryName-html-search">
-    
-    <input type="submit">
-    <a href='/expense-categories'><button>Reset</button></a>
-</form>
-
-{{!-- Embed JavaScript for handling form submissions and AJAX requests --}}
-<script src="./js/add_expense_category.js"></script>
-
-<h2>Update an Expense Category</h2>
-<p>To update a specific expense category, select it from the drop-down menu and provide its new name.</p>
-<form id="update-expense-category-form-ajax">
-
-    <label for="input-categoryName">Expense Category Name: </label>
-    <select name="input-categoryName" id="categorySelect">
-        <option value="test">Select an Expense Category</option>
-        {{#each data}}
-        <option value="{{this.expenseCategoryID}}">{{this.categoryName}}</option>
-        {{/each}}
-    </select>
-
-    <label for="input-categoryName">New Expense Category Name: </label>
-    <input type="text" name="input-categoryName" id="input-categoryName-update" placeholder="Enter a new category name">
-
-    <input type="submit">
-</form>
-
-<script src="./js/update_expense_category.js"></script>
+</div>

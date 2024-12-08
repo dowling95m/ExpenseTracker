@@ -3,79 +3,76 @@ Date: 11/21/2024
 Adapted from the guide code, plugged in project specifics and will eventually keep expanding to make it look better
 Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%200%20-%20Setting%20Up%20Node.js --}}
 
-<h1>Payment Methods Tracker</h1>
+<div class="page-container">
+    <h1 class="page-title">Payment Methods</h1>
 
-<h2>Payment Methods Table</h2>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <section class="form-section">
+        <h2 class="section-title">Payment Methods Table</h2>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
-{{!-- Create a table for displaying payment methods --}}
-<table id="payment-methods-table">
+        {{!-- Create a table for displaying payment methods --}}
+        <table id="payment-methods-table" class="data-table">
+            <thead>
+                <tr>
+                    {{#each data.[0]}}
+                    <th>{{@key}}</th>
+                    {{/each}}
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{!-- Loop through each payment method record and display its data --}}
+                {{#each data}}
+                <tr>
+                    <td>{{this.paymentMethodID}}</td>
+                    <td>{{this.paymentName}}</td>
+                    <td><button class="delete-button" onclick="deletePaymentMethod({{this.paymentMethodID}})">Delete</button></td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        <script src="./js/delete_payment_method.js"></script>
+    </section>
 
-    {{!-- Header section --}}
-    <thead>
-        <tr>
-            {{#each data.[0]}}
-            <th>
-                {{@key}}
-            </th>
-            {{/each}}
-            <th>delete</th>
-        </tr>
-    </thead>
+    <section class="form-section">
+        <h2 class="section-title">Add New Payment Method</h2>
+        <p>To add a new payment method, please enter its name below and click 'Submit'!</p>
+        <form id="add-payment-method-form-ajax" class="data-form">
+            <label for="input-paymentName">Payment Method Name: </label>
+            <input type="text" name="input-paymentName" id="input-paymentName" class="form-input">
+            <input type="submit" value="Submit" class="submit-button">
+        </form>
+    </section>
 
-    {{!-- Body section --}}
-    <tbody>
-        {{!-- Loop through each payment method record and display its data --}}
-        {{#each data}}
-        <tr>
-            <td>{{this.paymentMethodID}}</td>
-            <td>{{this.paymentName}}</td>
-            <td><button onclick="deletePaymentMethod({{this.paymentMethodID}})">Delete</button></td>
-        </tr>
-        {{/each}}
-    </tbody>
-</table>
-<script src="./js/delete_payment_method.js"></script>
+    <section class="form-section">
+        <h2 class="section-title">Search For a Payment Method</h2>
+        <p>Search by payment method name using the field below.</p>
+        <form id="search-payment-method-html" method="GET" action="/payment-methods" class="data-form">
+            <label for="input-paymentName">Search by Payment Method Name: </label>
+            <input type="text" name="paymentName" id="input-paymentName-html-search" class="form-input">
 
-{{!-- Form to add a new payment method --}}
-<h2>Add New Payment Method</h2>
-<p>To add a new payment method, please enter its name below and click 'Submit'!</p>
-<form id="add-payment-method-form-ajax">
-    <label for="input-paymentName">Payment Method Name: </label>
-    <input type="text" name="input-paymentName" id="input-paymentName">
+            <input type="submit" value="Search" class="submit-button">
+            <a href="/payment-methods"><button class="reset-button" type="button">Reset</button></a>
+        </form>
+        <script src="./js/add_payment_method.js"></script>
+    </section>
 
-    <input type="submit">
-</form>
+    <section class="form-section">
+        <h2 class="section-title">Update a Payment Method</h2>
+        <p>To update a specific payment method, select it from the drop-down menu and provide its new name.</p>
+        <form id="update-payment-method-form-ajax" class="data-form">
+            <label for="paymentMethodSelect">Payment Method Name: </label>
+            <select name="input-paymentName" id="paymentMethodSelect" class="form-select">
+                <option value="test">Select a Payment Method</option>
+                {{#each data}}
+                <option value="{{this.paymentMethodID}}">{{this.paymentName}}</option>
+                {{/each}}
+            </select>
+            <label for="input-paymentName-update">New Payment Method Name: </label>
+            <input class="form-input" type="text" name="input-paymentName" id="input-paymentName-update" placeholder="Enter a new payment method name">
+            <input type="submit" value="Update" class="submit-button">
+        </form>
+        <script src="./js/update_payment_method.js"></script>
+    </section>
 
-<h2>Search For a Payment Method</h2>
-<p>Search by payment method name using the field below.</p>
-<form id="search-payment-method-html" method='GET' action='/payment-methods'>
-    <label for="input-paymentName">Search by Payment Method Name: </label>
-    <input type="text" name="paymentName" id="input-paymentName-html-search">
-    
-    <input type="submit">
-    <a href='/payment-methods'><button>Reset</button></a>
-</form>
-
-{{!-- Embed JavaScript for handling form submissions and AJAX requests --}}
-<script src="./js/add_payment_method.js"></script>
-
-<h2>Update a Payment Method</h2>
-<p>To update a specific payment method, select it from the drop-down menu and provide its new name.</p>
-<form id="update-payment-method-form-ajax">
-
-    <label for="input-paymentName">Payment Method Name: </label>
-    <select name="input-paymentName" id="paymentMethodSelect">
-        <option value="test">Select a Payment Method</option>
-        {{#each data}}
-        <option value="{{this.paymentMethodID}}">{{this.paymentName}}</option>
-        {{/each}}
-    </select>
-
-    <label for="input-paymentName">New Payment Method Name: </label>
-    <input type="text" name="input-paymentName" id="input-paymentName-update" placeholder="Enter a new payment method name">
-
-    <input type="submit">
-</form>
-
-<script src="./js/update_payment_method.js"></script>
+</div>

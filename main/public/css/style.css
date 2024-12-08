@@ -1,0 +1,248 @@
+/* General Styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f0f4f8;
+    color: #333;
+}
+
+/* Navbar Styles */
+.navbar {
+    background: linear-gradient(90deg, #4b79a1, #283e51);
+    color: #fff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+    padding: 1em 0;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.navbar-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2em;
+}
+
+/* Logo */
+.navbar-logo {
+    font-size: 1.8em;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+    color: #fffcf9;
+}
+
+/* Navigation Links */
+.navbar-links {
+    list-style: none;
+    display: flex;
+    gap: 1.5em;
+}
+
+.navbar-links li {
+    position: relative;
+}
+
+.navbar-links a {
+    color: #fffcf9;
+    text-decoration: none;
+    font-size: 1em;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    padding: 0.5em 1em;
+    border-radius: 5px;
+}
+
+.navbar-links a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+
+/* Page Container */
+.page-container {
+    width: 90%;
+    margin: 0 auto;
+    padding: 2em 0;
+}
+
+/* Page Title */
+.page-title {
+    font-size: 2.5em;
+    font-weight: bold;
+    text-align: center;
+    color: #2a3a47;
+    margin-bottom: 1em;
+}
+
+/* Section Titles */
+.section-title {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #2a3a47;
+    margin-bottom: 0.75em;
+    border-bottom: 2px solid #4b79a1;
+    padding-bottom: 0.5em;
+}
+
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1em;
+}
+
+.data-table th,
+.data-table td {
+    padding: 1em;
+    text-align: left;
+}
+
+.data-table th {
+    background-color: #4b79a1;
+    color: #fff;
+}
+
+.data-table td {
+    background-color: #fff;
+}
+
+.data-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.delete-button {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 0.5em 1em;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.delete-button:hover {
+    background-color: #c0392b;
+}
+
+.data-table tr:hover {
+    background-color: rgba(255, 255, 255, 0.3); /* Or another color */
+}
+
+/* Form Section */
+.form-section {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 2em;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2em;
+}
+
+.data-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2em;
+}
+
+.form-input,
+.form-select {
+    padding: 0.8em;
+    font-size: 1em;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.form-input:focus,
+.form-select:focus {
+    outline: none;
+    border-color: #4b79a1;
+}
+
+.submit-button {
+    padding: 1em 2em;
+    background-color: #4b79a1;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+    background-color: #283e51;
+}
+
+.reset-button {
+    padding: 1em 2em;
+    background-color: #95a5a6;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.reset-button:hover {
+    background-color: #7f8c8d;
+}
+
+/* Search Section */
+.search-section {
+    margin-bottom: 2em;
+}
+
+.search-section p {
+    font-size: 1.1em;
+    margin-bottom: 0.5em;
+}
+
+/* Select Dropdown */
+.form-select {
+    width: 100%;
+    padding: 0.8em;
+    border-radius: 5px;
+    font-size: 1em;
+    border: 1px solid #ddd;
+}
+
+.form-select:focus {
+    outline: none;
+    border-color: #4b79a1;
+}
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+    .page-container {
+        width: 100%;
+        padding: 1em;
+    }
+
+    .navbar-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .navbar-links {
+        flex-direction: column;
+        gap: 1em;
+    }
+
+    .data-table th,
+    .data-table td {
+        padding: 0.8em;
+    }
+
+    .form-input,
+    .form-select {
+        font-size: 1em;
+    }
+}

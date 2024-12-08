@@ -3,89 +3,90 @@ Date: 11/21/2024
 Adapted from the guide code, plugged in project specifics and will eventually keep expanding to make it look better
 Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%200%20-%20Setting%20Up%20Node.js --}}
 
+<div class="page-container">
+    <h1 class="page-title">Users</h1>
 
-<h1>Expense Tracker Database</h1>
+    <section class="form-section">
+        <h2 class="section-title">Users Table</h2>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
-<h2>Users Table</h2>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <div class="table-wrapper">
+            <table id="users-table" class="data-table">
+                <thead>
+                    <tr>
+                        {{#each data.[0]}}
+                        <th>{{@key}}</th>
+                        {{/each}}
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each data}}
+                    <tr>
+                        <td>{{this.userID}}</td>
+                        <td>{{this.userName}}</td>
+                        <td>{{this.monthlyBudget}}</td>
+                        <td>
+                            <button class="delete-button" onclick="deleteUser({{this.userID}})">Delete</button>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        <script src="./js/delete_user.js"></script>
+    </section>
 
+    <section class="form-section">
+        <div class="form-wrapper">
+            <h2 class="section-title">Add New User</h2>
+            <p>To add a new user, please enter their information below and click 'Submit'!</p>
+            <form id="add-user-form-ajax" class="data-form">
+                <label for="input-userName">Name: </label>
+                <input type="text" name="input-userName" id="input-userName" class="form-input">
+                
+                <label for="input-monthlyBudget">Monthly Budget: </label>
+                <input type="text" name="input-monthlyBudget" id="input-monthlyBudget" class="form-input">
 
-{{!-- Create a table --}}
-<table id="users-table">
+                <input type="submit" class="submit-button">
+            </form>
+        </div>
+    </section>
 
-    {{!-- Header section --}}
-    <thead>
+    <section class="form-section">
+        <h2 class="section-title">Search For a User</h2>
+        <p>Search by user name using the field below.</p>
+        <form id="search-user-html" method="GET" action="/view_users" class="data-form">
+            <label for="input-userName-html-search">Search by User Name: </label>
+            <input type="text" name="userName" id="input-userName-html-search" class="form-input">
+            
+            <input type="submit" class="submit-button">
+            <a href="/" class="reset-link">
+                <button type="button" class="reset-button">Reset</button>
+            </a>
+        </form>
+    </section>
 
-        {{!-- For just the first row, we print each key of the row object as a header cell so we
-        know what each column means when the page renders --}}
-        <tr>
-            {{#each data.[0]}}
-            <th>
-                {{@key}}
-            </th>
-            {{/each}}
-            <th>delete</th>
-        </tr>
-    </thead>
+    <script src="./js/add_user.js"></script>
 
-    {{!-- Body section --}}
-    <tbody>
+    <section class="form-section">
+        <h2 class="section-title">Update a User's Budget</h2>
+        <p>To update a specific user's budget, select their name from the drop-down menu on the left and their desired monthly budget.</p>
+        <form id="update-user-form-ajax" class="data-form">
+            <label for="mySelect">User Name: </label>
+            <select name="input-userName" id="mySelect" class="form-select">
+                <option value="test">Select a User</option>
+                {{#each data}}
+                <option value="{{this.userID}}">{{this.userName}}</option>
+                {{/each}}
+            </select>
 
-        {{!-- For each row, print the id, name, monthly budget in order --}}
-        {{#each data}}
-        <tr>
-            <td>{{this.userID}}</td>
-            <td>{{this.userName}}</td>
-            <td>{{this.monthlyBudget}}</td>
-            <td><button onclick="deleteUser({{this.userID}})">Delete</button></td>
-        </tr>
-        {{/each}}
-    </tbody>
-</table>
-<script src="./js/delete_user.js"></script>
+            <label for="input-monthlyBudget-update">Monthly Budget: </label>
+            <input type="text" name="input-monthlyBudget" id="input-monthlyBudget-update" placeholder="Enter a budget" class="form-input">
 
-{{!-- Form to add a record to the table  --}}
-<h2>Add New User</h2>
-<p>To add a new user, please enter their information below and click 'Submit'!</p>
-<form id="add-user-form-ajax">
-    <label for="input-userName">Name: </label>
-    <input type="text" name="input-userName" id="input-userName">
-    
-    <label for="input-monthlyBudget">Monthly Budget: </label>
-    <input type="text" name="input-monthlyBudget" id="input-monthlyBudget">
+            <input type="submit" class="submit-button">
+        </form>
+    </section>
 
-    <input type="submit">
-</form>
-
-<h2>Search For a User</h2>
-<p>Search by user name using the field below.</p>
-<form id="search-user-html" method='GET' action='/view_users'>
-    <label for="input-userName">Search by User Name: </label>
-    <input type="text" name="userName" id="input-userName-html-search">
-    
-    <input type="submit">
-    <a href='/'><button>Reset</button></a>
-</form>
-
-{{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
-<script src="./js/add_user.js"></script>
-
-<h2>Update a User's Budget</h2>
-<p>To update a specific user's, select their name from the drop-down menu on the left and their desired monthly budget.</p>
-<form id="update-user-form-ajax">
-
-    <label for="input-userName">User Name: </label>
-    <select name="input-userName" id="mySelect">
-        <option value="test">Select a User</option>
-        {{#each data}}
-        <option value="{{this.userID}}">{{this.userName}}</option>
-        {{/each}}
-    </select>
-
-    <label for="input-monthlyBudget">Monthly Budget: </label>
-    <input type="text" name="input-monthlyBudget" id="input-monthlyBudget-update" placeholder="Enter a budget">
-
-    <input type="submit">
-</form>
-
-<script src="./js/update_user.js"></script>
+    <script src="./js/update_user.js"></script>
+</div>
