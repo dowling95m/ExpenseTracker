@@ -16,6 +16,8 @@ function deleteExpenseCategory(expenseCategoryID) {
       contentType: "application/json; charset=utf-8",
       success: function(result) {
         deleteRow(expenseCategoryID);
+        window.location.reload();
+
       }
     });
 }

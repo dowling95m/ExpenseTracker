@@ -33,6 +33,7 @@ updatePaymentMethodForm.addEventListener("submit", function (e) {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
             // Add the new data to the table
             updateRow(xhttp.response, paymentMethodNameValue);
+            window.location.reload();
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
             console.log("There was an error with the input.")

@@ -41,6 +41,7 @@ updateUserTransactionForm.addEventListener("submit", function (e) {
         if (xhttp.readyState == 4 && xhttp.status == 204) {
             // No content means update successful, so reload or modify row
             updateRow(xhttp.response, userTransactionIDValue);
+            window.location.reload();
         } else if (xhttp.readyState == 4 && xhttp.status != 200) {
             console.log("There was an error with the input.");
         }

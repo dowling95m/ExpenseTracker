@@ -16,6 +16,7 @@ function deleteUser(userID) {
       contentType: "application/json; charset=utf-8",
       success: function(result) {
         deleteRow(userID);
+        window.location.reload();
       }
     });
   }

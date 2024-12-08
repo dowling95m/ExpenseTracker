@@ -42,7 +42,6 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/St
 
     <section class="form-section">
         <h2 class="section-title">Add New Transaction</h2>
-        <p>To add a new transaction, please enter the details below and click 'Submit'!</p>
         <form id="add-transaction-form-ajax" class="data-form">
             <label for="input-date">Transaction Date: </label>
             <input type="datetime-local" name="input-date" id="input-date" class="form-input">
@@ -73,9 +72,11 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/St
         </form>
     </section>
 
+    <script src="./js/add_transaction.js"></script>
+
+{{!-- 
     <section class="form-section">
         <h2 class="section-title">Search For a Transaction</h2>
-        <p>Search by transaction ID, date, or category using the field below.</p>
         <form id="search-transaction-html" method="GET" action="/transactions" class="data-form">
             <label for="input-search">Search by ID, Date, or Category: </label>
             <input type="text" name="searchTerm" id="input-search" class="form-input">
@@ -87,7 +88,6 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/St
 
     <section class="form-section">
         <h2 class="section-title">Update a Transaction</h2>
-        <p>To update a specific transaction, select it from the drop-down menu and modify its details.</p>
         <form id="update-transaction-form-ajax" class="data-form">
             <label for="input-transactionID">Transaction ID: </label>
             <select name="input-transactionID" id="transactionSelect" class="form-select">
@@ -123,4 +123,4 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/St
         </form>
         <script src="./js/update_transaction.js"></script>
     </section>
-</div>
+</div> --}}

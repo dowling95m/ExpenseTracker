@@ -40,7 +40,6 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/St
     <section class="form-section">
         <div class="form-wrapper">
             <h2 class="section-title">Add New User</h2>
-            <p>To add a new user, please enter their information below and click 'Submit'!</p>
             <form id="add-user-form-ajax" class="data-form">
                 <label for="input-userName">Name: </label>
                 <input type="text" name="input-userName" id="input-userName" class="form-input">
@@ -55,13 +54,12 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/St
 
     <section class="form-section">
         <h2 class="section-title">Search For a User</h2>
-        <p>Search by user name using the field below.</p>
         <form id="search-user-html" method="GET" action="/view_users" class="data-form">
             <label for="input-userName-html-search">Search by User Name: </label>
             <input type="text" name="userName" id="input-userName-html-search" class="form-input">
             
             <input type="submit" class="submit-button">
-            <a href="/" class="reset-link">
+            <a href="/view_users" class="reset-link">
                 <button type="button" class="reset-button">Reset</button>
             </a>
         </form>
@@ -71,7 +69,6 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/St
 
     <section class="form-section">
         <h2 class="section-title">Update a User's Budget</h2>
-        <p>To update a specific user's budget, select their name from the drop-down menu on the left and their desired monthly budget.</p>
         <form id="update-user-form-ajax" class="data-form">
             <label for="mySelect">User Name: </label>
             <select name="input-userName" id="mySelect" class="form-select">

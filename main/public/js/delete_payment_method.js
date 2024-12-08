@@ -16,6 +16,8 @@ function deletePaymentMethod(paymentMethodID) {
       contentType: "application/json; charset=utf-8",
       success: function(result) {
         deleteRow(paymentMethodID);
+        window.location.reload();
+
       }
     });
 }
